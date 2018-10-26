@@ -17,7 +17,7 @@ How to Use
 To see how a StoriesProgressView can be added to your xml layouts, check the sample project.
 
 ```xml
-    <jp.shts.android.storiesprogressview.StoriesProgressView
+    <com.teresaholfeld.stories.StoriesProgressView
         android:id="@+id/stories"
         android:layout_width="match_parent"
         android:layout_height="3dp"

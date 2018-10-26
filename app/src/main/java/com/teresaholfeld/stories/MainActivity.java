@@ -1,4 +1,4 @@
-package jp.shts.android.storyprogressbar;
+package com.teresaholfeld.stories;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -6,8 +6,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
-
-import jp.shts.android.storiesprogressview.StoriesProgressView;
 
 public class MainActivity extends AppCompatActivity implements StoriesProgressView.StoriesListener {
 

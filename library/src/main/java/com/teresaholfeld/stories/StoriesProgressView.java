@@ -1,4 +1,4 @@
-package jp.shts.android.storiesprogressview;
+package com.teresaholfeld.stories;
 
 import android.annotation.TargetApi;
 import android.content.Context;

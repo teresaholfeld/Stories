@@ -1,4 +1,4 @@
-package jp.shts.android.storiesprogressview;
+package com.teresaholfeld.stories;
 
 import android.content.Context;
 import android.support.annotation.AttrRes;
@@ -16,7 +16,7 @@ import android.widget.FrameLayout;
 final class PausableProgressBar extends FrameLayout {
 
     /***
-     * progress満了タイマーのデフォルト時間
+     * progress
      */
     private static final int DEFAULT_PROGRESS_DURATION = 2000;
 
