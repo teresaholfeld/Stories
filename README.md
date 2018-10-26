@@ -1,7 +1,9 @@
-StoriesProgressView
+Stories
 ====
 
-Library that shows a horizontal progress like Instagram stories.
+Stories is a library that shows a horizontal progress like Instagram stories.
+
+This project has been forked and extended from [shts/StoriesProgressView](https://github.com/shts/StoriesProgressView).
 
 [![](https://jitpack.io/v/shts/StoriesProgressView.svg)](https://jitpack.io/#shts/StoriesProgressView)
 
@@ -9,7 +11,7 @@ Library that shows a horizontal progress like Instagram stories.
 
 <img src="image/image.gif" width=200 /> 
 
-^She is [Yui Kobayashi](http://www.keyakizaka46.com/s/k46o/artist/07)
+The person in these pictures and the pictures in the sample app is [Yui Kobayashi](http://www.keyakizaka46.com/s/k46o/artist/07).
 
 How to Use
 ----
@@ -17,7 +19,7 @@ How to Use
 To see how a StoriesProgressView can be added to your xml layouts, check the sample project.
 
 ```xml
-    <jp.shts.android.storiesprogressview.StoriesProgressView
+    <com.teresaholfeld.stories.StoriesProgressView
         android:id="@+id/stories"
         android:layout_width="match_parent"
         android:layout_height="3dp"
@@ -113,8 +115,10 @@ dependencies {
 License
 ---
 
+Modifications:
+
 ```
-Copyright (C) 2017 Shota Saito(shts)
+Copyright (C) 2018 Teresa Holfeld (teresaholfeld), 2017 Shota Saito (shts)
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

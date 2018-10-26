@@ -30,7 +30,7 @@
             android:layout_weight="1" />
     </LinearLayout>
 
-    <jp.shts.android.storiesprogressview.StoriesProgressView
+    <com.teresaholfeld.stories.StoriesProgressView
         android:id="@+id/stories"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
