@@ -5,7 +5,7 @@ Stories is a library that shows a horizontal progress like Instagram stories.
 
 This project has been forked and extended from [shts/StoriesProgressView](https://github.com/shts/StoriesProgressView).
 
-[![](https://jitpack.io/v/shts/StoriesProgressView.svg)](https://jitpack.io/#shts/StoriesProgressView)
+[![](https://jitpack.io/v/teresaholfeld/Stories.svg)](https://jitpack.io/#teresaholfeld/Stories)
 
 <img src="image/capture.png" width=200 />
 
@@ -107,7 +107,7 @@ Add the dependency
 
 ```
 dependencies {
-    implementation 'com.github.shts:StoriesProgressView:3.0.0'
+    implementation 'com.github.teresaholfeld:Stories:1.0.0'
 }
 
 ```
