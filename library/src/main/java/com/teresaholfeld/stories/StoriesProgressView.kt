@@ -11,8 +11,8 @@ import java.util.ArrayList
 
 class StoriesProgressView : LinearLayout {
 
-    private val PROGRESS_BAR_LAYOUT_PARAM = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
-    private val SPACE_LAYOUT_PARAM = LinearLayout.LayoutParams(5, LinearLayout.LayoutParams.WRAP_CONTENT)
+    private val progressBarLayoutParam = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
+    private val spaceLayoutParam = LinearLayout.LayoutParams(5, LinearLayout.LayoutParams.WRAP_CONTENT)
     private val defaultColor = ContextCompat.getColor(context, R.color.progress_primary)
     private val defaultBackgroundColor = ContextCompat.getColor(context, R.color.progress_secondary)
 
@@ -81,13 +81,13 @@ class StoriesProgressView : LinearLayout {
 
     private fun createProgressBar(): PausableProgressBar {
         val p = PausableProgressBar(context, progressColor, progressBackgroundColor)
-        p.layoutParams = PROGRESS_BAR_LAYOUT_PARAM
+        p.layoutParams = progressBarLayoutParam
         return p
     }
 
     private fun createSpace(): View {
         val v = View(context)
-        v.layoutParams = SPACE_LAYOUT_PARAM
+        v.layoutParams = spaceLayoutParam
         return v
     }
 
