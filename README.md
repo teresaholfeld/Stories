@@ -1,5 +1,4 @@
-Stories
-====
+# Stories
 
 Stories is a library that shows a horizontal progress like Instagram stories.
 
@@ -7,14 +6,36 @@ This project has been forked and extended from [shts/StoriesProgressView](https:
 
 [![](https://jitpack.io/v/teresaholfeld/Stories.svg)](https://jitpack.io/#teresaholfeld/Stories)
 
-<img src="image/capture.png" width=200 />
+<img src="image/capture.png" width="200" />
 
-<img src="image/image.gif" width=200 /> 
+<img src="image/image.gif" width="200" /> 
 
 The person in these pictures and the pictures in the sample app is [Yui Kobayashi](http://www.keyakizaka46.com/s/k46o/artist/07).
 
-How to Use
-----
+## Install
+
+Add jitpack to your repositories in your root `build.gradle`:
+
+```groovy
+allprojects {
+    repositories {
+        ...
+        maven { url "https://jitpack.io" }
+    }
+}
+
+```
+
+Add the dependency in your app `build.gradle`:
+
+```
+dependencies {
+    implementation 'com.github.teresaholfeld:Stories:1.1.0'
+}
+
+```
+
+## How to Use
 
 To see how a StoriesProgressView can be added to your xml layouts, check the sample project.
 
@@ -68,52 +89,57 @@ public class YourActivity extends AppCompatActivity implements StoriesProgressVi
 }
 ```
 
-Skip and Reverse story
----
+### Skip and reverse the story progress
 
-<img src="image/skip-reverse.gif" width=200 />
+<img src="image/skip-reverse.gif" width="200" />
 
 ```java
   storiesProgressView.skip();
   storiesProgressView.reverse();
 ```
 
-Pause and Resume story
----
-<img src="image/pause-resume.gif" width=200 />
+### Pause and resume the story progress
+
+<img src="image/pause-resume.gif" width="200" />
 
 ```java
   storiesProgressView.pause();
   storiesProgressView.resume();
 ```
 
+### Change the color of the progress bar
 
-Install
----
+You can change the foreground color and background color of the 
+progress bar.
 
-Add it in your root build.gradle at the end of repositories:
+<img src="image/progress-color.png" width="200" />
 
-```groovy
-allprojects {
-    repositories {
-        ...
-        maven { url "https://jitpack.io" }
-    }
-}
+To do this, you can add the attributes to your layout xml:
 
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+       xmlns:app="http://schemas.android.com/apk/res-auto"
+       android:layout_width="match_parent"
+       android:layout_height="match_parent">
+   
+   <com.teresaholfeld.stories.StoriesProgressView
+           android:id="@+id/stories"
+           android:layout_width="match_parent"
+           android:layout_height="3dp"
+           android:layout_gravity="top"
+           android:layout_marginTop="8dp"
+           android:paddingLeft="8dp"
+           android:paddingRight="8dp"
+           app:progressBackgroundColor="@color/purple"
+           app:progressColor="@color/colorAccent"/>
+           
+   <!-- ... -->
+</LinearLayout>
 ```
 
-Add the dependency
 
-```
-dependencies {
-    implementation 'com.github.teresaholfeld:Stories:1.0.0'
-}
-
-```
-
-License
----
+## License
 
 Modifications:
 
