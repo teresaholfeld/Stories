@@ -3,15 +3,21 @@ package com.teresaholfeld.stories
 import android.annotation.TargetApi
 import android.content.Context
 import android.os.Build
+import android.support.v4.content.ContextCompat
 import android.util.AttributeSet
 import android.view.View
 import android.widget.LinearLayout
-import java.util.*
+import java.util.ArrayList
 
 class StoriesProgressView : LinearLayout {
 
     private val PROGRESS_BAR_LAYOUT_PARAM = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
     private val SPACE_LAYOUT_PARAM = LinearLayout.LayoutParams(5, LinearLayout.LayoutParams.WRAP_CONTENT)
+    private val defaultColor = ContextCompat.getColor(context, R.color.progress_primary)
+    private val defaultBackgroundColor = ContextCompat.getColor(context, R.color.progress_secondary)
+
+    private var progressColor = defaultColor
+    private var progressBackgroundColor = defaultBackgroundColor
 
     private val progressBars = ArrayList<PausableProgressBar>()
 
@@ -43,7 +49,8 @@ class StoriesProgressView : LinearLayout {
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int, defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes) {
+    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int, defStyleRes: Int)
+        : super(context, attrs, defStyleAttr, defStyleRes) {
         init(context, attrs)
     }
 
@@ -51,6 +58,9 @@ class StoriesProgressView : LinearLayout {
         orientation = LinearLayout.HORIZONTAL
         val typedArray = context.obtainStyledAttributes(attrs, R.styleable.StoriesProgressView)
         storiesCount = typedArray.getInt(R.styleable.StoriesProgressView_progressCount, 0)
+        progressColor = typedArray.getColor(R.styleable.StoriesProgressView_progressColor, defaultColor)
+        progressBackgroundColor = typedArray.getColor(R.styleable.StoriesProgressView_progressBackgroundColor,
+            defaultBackgroundColor)
         typedArray.recycle()
         bindViews()
     }
@@ -70,7 +80,7 @@ class StoriesProgressView : LinearLayout {
     }
 
     private fun createProgressBar(): PausableProgressBar {
-        val p = PausableProgressBar(context)
+        val p = PausableProgressBar(context, progressColor, progressBackgroundColor)
         p.layoutParams = PROGRESS_BAR_LAYOUT_PARAM
         return p
     }

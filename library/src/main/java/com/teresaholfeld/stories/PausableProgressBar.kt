@@ -11,10 +11,13 @@ import android.view.animation.Transformation
 import android.widget.FrameLayout
 
 internal class PausableProgressBar constructor(context: Context,
-                                               attrs: AttributeSet? = null)
+                                               attrs: AttributeSet? = null,
+                                               progressColor: Int,
+                                               progressBackgroundColor: Int)
     : FrameLayout(context, attrs) {
 
     private val frontProgressView: View
+    private val backProgressView: View
     private val maxProgressView: View
 
     private var animation: PausableScaleAnimation? = null
@@ -26,12 +29,18 @@ internal class PausableProgressBar constructor(context: Context,
         fun onFinishProgress()
     }
 
-    constructor(context: Context): this(context, null)
+    constructor(context: Context,
+                progressColor: Int,
+                progressBackgroundColor: Int):
+        this(context, null, progressColor, progressBackgroundColor)
 
     init {
         LayoutInflater.from(context).inflate(R.layout.pausable_progress, this)
         frontProgressView = findViewById(R.id.front_progress)
         maxProgressView = findViewById(R.id.max_progress) // work around
+        backProgressView = findViewById(R.id.back_progress)
+        frontProgressView.setBackgroundColor(progressColor)
+        backProgressView.setBackgroundColor(progressBackgroundColor)
     }
 
     fun setDuration(duration: Long) {
