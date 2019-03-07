@@ -30,7 +30,7 @@ Add the dependency in your app `build.gradle`:
 
 ```
 dependencies {
-    implementation 'com.github.teresaholfeld:Stories:1.1.0'
+    implementation 'com.github.teresaholfeld:Stories:1.1.1'
 }
 
 ```
