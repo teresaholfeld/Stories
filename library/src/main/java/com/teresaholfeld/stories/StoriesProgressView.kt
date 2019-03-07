@@ -196,13 +196,16 @@ class StoriesProgressView : LinearLayout {
      * Start progress animation
      */
     fun startStories() {
-        progressBars[0].startProgress()
+        if (progressBars.size > 0) {
+            progressBars[0].startProgress()
+        }
     }
 
     /**
      * Start progress animation from specific progress
      */
     fun startStories(from: Int) {
+        if (progressBars.size == 0) return
         for (i in 0 until from) {
             progressBars[i].setMaxWithoutCallback()
         }
