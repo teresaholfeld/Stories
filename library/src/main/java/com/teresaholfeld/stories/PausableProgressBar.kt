@@ -48,10 +48,14 @@ internal class PausableProgressBar constructor(context: Context,
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
+        setupAnimation()
         maxProgressView?.visibility = View.GONE
+        frontProgressView?.animation = animation
+    }
+
+    private fun setupAnimation() {
         animation = PausableScaleAnimation(0f, 1f, 1f, 1f, Animation.ABSOLUTE, 0f,
             Animation.RELATIVE_TO_SELF, 0f)
-
         animation?.apply {
             this.duration = duration
             this.interpolator = LinearInterpolator()
@@ -69,7 +73,6 @@ internal class PausableProgressBar constructor(context: Context,
             })
             this.fillAfter = true
         }
-        frontProgressView?.animation = animation
     }
 
     fun setDuration(duration: Long) {
