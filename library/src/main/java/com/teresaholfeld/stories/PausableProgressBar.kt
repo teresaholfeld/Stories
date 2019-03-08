@@ -46,6 +46,31 @@ internal class PausableProgressBar constructor(context: Context,
         maxProgressView?.setBackgroundColor(progressColor)
     }
 
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+        maxProgressView?.visibility = View.GONE
+        animation = PausableScaleAnimation(0f, 1f, 1f, 1f, Animation.ABSOLUTE, 0f,
+            Animation.RELATIVE_TO_SELF, 0f)
+
+        animation?.apply {
+            this.duration = duration
+            this.interpolator = LinearInterpolator()
+            this.setAnimationListener(object : Animation.AnimationListener {
+                override fun onAnimationStart(animation: Animation) {
+                    frontProgressView?.visibility = View.VISIBLE
+                    callback?.onStartProgress()
+                }
+
+                override fun onAnimationRepeat(animation: Animation) {}
+
+                override fun onAnimationEnd(animation: Animation) {
+                    callback?.onFinishProgress()
+                }
+            })
+            this.fillAfter = true
+        }
+    }
+
     fun setDuration(duration: Long) {
         this.duration = duration
     }
@@ -85,25 +110,6 @@ internal class PausableProgressBar constructor(context: Context,
     }
 
     fun startProgress() {
-        maxProgressView?.visibility = View.GONE
-
-        animation = PausableScaleAnimation(0f, 1f, 1f, 1f, Animation.ABSOLUTE, 0f,
-            Animation.RELATIVE_TO_SELF, 0f)
-        animation?.duration = duration
-        animation?.interpolator = LinearInterpolator()
-        animation?.setAnimationListener(object : Animation.AnimationListener {
-            override fun onAnimationStart(animation: Animation) {
-                frontProgressView?.visibility = View.VISIBLE
-                callback?.onStartProgress()
-            }
-
-            override fun onAnimationRepeat(animation: Animation) {}
-
-            override fun onAnimationEnd(animation: Animation) {
-                callback?.onFinishProgress()
-            }
-        })
-        animation?.fillAfter = true
         frontProgressView?.startAnimation(animation)
     }
 
