@@ -69,6 +69,7 @@ internal class PausableProgressBar constructor(context: Context,
             })
             this.fillAfter = true
         }
+        frontProgressView?.animation = animation
     }
 
     fun setDuration(duration: Long) {
@@ -110,7 +111,7 @@ internal class PausableProgressBar constructor(context: Context,
     }
 
     fun startProgress() {
-        frontProgressView?.startAnimation(animation)
+        animation?.start()
     }
 
     fun pauseProgress() {
