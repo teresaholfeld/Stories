@@ -18,9 +18,9 @@ internal class PausableProgressBar constructor(context: Context,
                                                private val progressBackgroundColor: Int)
     : FrameLayout(context, attrs) {
 
-    private val frontProgressView: View
-    private val backProgressView: View
-    private val maxProgressView: View
+    private val frontProgressView: View?
+    private val backProgressView: View?
+    private val maxProgressView: View?
 
     private var animation: PausableScaleAnimation? = null
     private var duration = DEFAULT_PROGRESS_DURATION.toLong()
@@ -41,9 +41,9 @@ internal class PausableProgressBar constructor(context: Context,
         frontProgressView = findViewById(R.id.front_progress)
         maxProgressView = findViewById(R.id.max_progress) // work around
         backProgressView = findViewById(R.id.back_progress)
-        frontProgressView.setBackgroundColor(progressColor)
-        backProgressView.setBackgroundColor(progressBackgroundColor)
-        maxProgressView.setBackgroundColor(progressColor)
+        maxProgressView?.setBackgroundColor(progressColor)
+        backProgressView?.setBackgroundColor(progressBackgroundColor)
+        maxProgressView?.setBackgroundColor(progressColor)
     }
 
     fun setDuration(duration: Long) {
@@ -63,78 +63,62 @@ internal class PausableProgressBar constructor(context: Context,
     }
 
     fun setMinWithoutCallback() {
-        maxProgressView.setBackgroundColor(progressBackgroundColor)
-
-        maxProgressView.visibility = View.VISIBLE
-        if (animation != null) {
-            animation!!.setAnimationListener(null)
-            animation!!.cancel()
-        }
+        maxProgressView?.setBackgroundColor(progressBackgroundColor)
+        maxProgressView?.visibility = View.VISIBLE
+        animation?.setAnimationListener(null)
+        animation?.cancel()
     }
 
     fun setMaxWithoutCallback() {
-        maxProgressView.setBackgroundColor(progressColor)
-
-        maxProgressView.visibility = View.VISIBLE
-        if (animation != null) {
-            animation!!.setAnimationListener(null)
-            animation!!.cancel()
-        }
+        maxProgressView?.setBackgroundColor(progressColor)
+        maxProgressView?.visibility = View.VISIBLE
+        animation?.setAnimationListener(null)
+        animation?.cancel()
     }
 
     private fun finishProgress(isMax: Boolean) {
-        if (isMax) maxProgressView.setBackgroundColor(progressColor)
-        maxProgressView.visibility = if (isMax) View.VISIBLE else View.GONE
-        if (animation != null) {
-            animation!!.setAnimationListener(null)
-            animation!!.cancel()
-            if (callback != null) {
-                callback!!.onFinishProgress()
-            }
-        }
+        if (isMax) maxProgressView?.setBackgroundColor(progressColor)
+        maxProgressView?.visibility = if (isMax) View.VISIBLE else View.GONE
+        animation?.setAnimationListener(null)
+        animation?.cancel()
+        callback?.onFinishProgress()
     }
 
     fun startProgress() {
-        maxProgressView.visibility = View.GONE
+        maxProgressView?.visibility = View.GONE
 
         animation = PausableScaleAnimation(0f, 1f, 1f, 1f, Animation.ABSOLUTE, 0f,
             Animation.RELATIVE_TO_SELF, 0f)
-        animation!!.duration = duration
-        animation!!.interpolator = LinearInterpolator()
-        animation!!.setAnimationListener(object : Animation.AnimationListener {
+        animation?.duration = duration
+        animation?.interpolator = LinearInterpolator()
+        animation?.setAnimationListener(object : Animation.AnimationListener {
             override fun onAnimationStart(animation: Animation) {
-                frontProgressView.visibility = View.VISIBLE
-                if (callback != null) callback!!.onStartProgress()
+                frontProgressView?.visibility = View.VISIBLE
+                callback?.onStartProgress()
             }
 
             override fun onAnimationRepeat(animation: Animation) {}
 
             override fun onAnimationEnd(animation: Animation) {
-                if (callback != null) callback!!.onFinishProgress()
+                callback?.onFinishProgress()
             }
         })
-        animation!!.fillAfter = true
-        frontProgressView.startAnimation(animation)
+        animation?.fillAfter = true
+        frontProgressView?.startAnimation(animation)
     }
 
     fun pauseProgress() {
-        if (animation != null) {
-            animation!!.pause()
-        }
+        animation?.pause()
     }
 
     fun resumeProgress() {
-        if (animation != null) {
-            animation!!.resume()
-        }
+        animation?.resume()
     }
 
     fun clear() {
-        if (animation != null) {
-            animation!!.setAnimationListener(null)
-            animation!!.cancel()
-            animation = null
-        }
+        animation?.setAnimationListener(null)
+        animation?.cancel()
+        animation = null
     }
 
     private inner class PausableScaleAnimation internal constructor(fromX: Float,

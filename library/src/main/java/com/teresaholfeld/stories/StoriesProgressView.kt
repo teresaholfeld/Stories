@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package com.teresaholfeld.stories
 
 import android.annotation.TargetApi
@@ -168,7 +170,7 @@ class StoriesProgressView : LinearLayout {
 
             override fun onFinishProgress() {
                 if (isReverseStart) {
-                    if (storiesListener != null) storiesListener!!.onPrev()
+                    storiesListener?.onPrev()
                     if (0 <= current - 1) {
                         val p = progressBars[current - 1]
                         p.setMinWithoutCallback()
@@ -181,11 +183,11 @@ class StoriesProgressView : LinearLayout {
                 }
                 val next = current + 1
                 if (next <= progressBars.size - 1) {
-                    if (storiesListener != null) storiesListener!!.onNext()
+                    storiesListener?.onNext()
                     progressBars[next].startProgress()
                 } else {
                     isComplete = true
-                    if (storiesListener != null) storiesListener!!.onComplete()
+                    storiesListener?.onComplete()
                 }
                 isSkipStart = false
             }
@@ -196,9 +198,7 @@ class StoriesProgressView : LinearLayout {
      * Start progress animation
      */
     fun startStories() {
-        if (progressBars.size > 0) {
-            progressBars[0].startProgress()
-        }
+        progressBars.getOrNull(0)?.startProgress()
     }
 
     /**
@@ -237,7 +237,7 @@ class StoriesProgressView : LinearLayout {
      */
     fun pause() {
         if (current < 0) return
-        progressBars[current].pauseProgress()
+        progressBars.getOrNull(current)?.pauseProgress()
     }
 
     /**
@@ -245,6 +245,6 @@ class StoriesProgressView : LinearLayout {
      */
     fun resume() {
         if (current < 0) return
-        progressBars[current].resumeProgress()
+        progressBars.getOrNull(current)?.resumeProgress()
     }
 }
