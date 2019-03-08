@@ -32,12 +32,12 @@ class MainActivity : AppCompatActivity(), StoriesProgressView.StoriesListener {
         when (event.action) {
             MotionEvent.ACTION_DOWN -> {
                 pressTime = System.currentTimeMillis()
-                storiesProgressView!!.pause()
+                storiesProgressView?.pause()
                 return@OnTouchListener false
             }
             MotionEvent.ACTION_UP -> {
                 val now = System.currentTimeMillis()
-                storiesProgressView!!.resume()
+                storiesProgressView?.resume()
                 return@OnTouchListener limit < now - pressTime
             }
         }
@@ -50,43 +50,43 @@ class MainActivity : AppCompatActivity(), StoriesProgressView.StoriesListener {
         setContentView(R.layout.activity_main)
 
         storiesProgressView = findViewById<View>(R.id.stories) as StoriesProgressView
-        storiesProgressView!!.setStoriesCount(PROGRESS_COUNT)
-        storiesProgressView!!.setStoryDuration(3000L)
+        storiesProgressView?.setStoriesCount(PROGRESS_COUNT)
+        storiesProgressView?.setStoryDuration(3000L)
         // or
         // storiesProgressView.setStoriesCountWithDurations(durations);
-        storiesProgressView!!.setStoriesListener(this)
+        storiesProgressView?.setStoriesListener(this)
         //        storiesProgressView.startStories();
         counter = 2
-        storiesProgressView!!.startStories(counter)
+        storiesProgressView?.startStories(counter)
 
         image = findViewById<View>(R.id.image) as ImageView
-        image!!.setImageResource(resources[counter])
+        image?.setImageResource(resources[counter])
 
         // bind reverse view
         val reverse = findViewById<View>(R.id.reverse)
-        reverse.setOnClickListener { storiesProgressView!!.reverse() }
+        reverse.setOnClickListener { storiesProgressView?.reverse() }
         reverse.setOnTouchListener(onTouchListener)
 
         // bind skip view
         val skip = findViewById<View>(R.id.skip)
-        skip.setOnClickListener { storiesProgressView!!.skip() }
+        skip.setOnClickListener { storiesProgressView?.skip() }
         skip.setOnTouchListener(onTouchListener)
     }
 
     override fun onNext() {
-        image!!.setImageResource(resources[++counter])
+        image?.setImageResource(resources[++counter])
     }
 
     override fun onPrev() {
         if (counter - 1 < 0) return
-        image!!.setImageResource(resources[--counter])
+        image?.setImageResource(resources[--counter])
     }
 
     override fun onComplete() {}
 
     override fun onDestroy() {
         // Very important !
-        storiesProgressView!!.destroy()
+        storiesProgressView?.destroy()
         super.onDestroy()
     }
 
