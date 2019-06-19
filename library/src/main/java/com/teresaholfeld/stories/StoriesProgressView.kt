@@ -31,8 +31,8 @@ class StoriesProgressView : LinearLayout {
     private var storiesListener: StoriesListener? = null
     internal var isComplete: Boolean = false
 
-    private var isSkipStart: Boolean = false
-    private var isReverseStart: Boolean = false
+    private var wasSkippedForward: Boolean = false
+    private var wasSkippedBackward: Boolean = false
 
     interface StoriesListener {
         fun onNext()
@@ -116,11 +116,12 @@ class StoriesProgressView : LinearLayout {
      * Skip current story
      */
     fun skip() {
-        if (isSkipStart || isReverseStart) return
-        if (isComplete) return
-        if (current < 0) return
+//        if (wasSkippedForward || wasSkippedBackward) return
+//        if (isComplete) return
+        if (current >= progressBars.size) return
         val p = progressBars[current]
-        isSkipStart = true
+        wasSkippedForward = true
+        wasSkippedBackward = false
         p.setMax()
     }
 
@@ -128,11 +129,12 @@ class StoriesProgressView : LinearLayout {
      * Reverse current story
      */
     fun reverse() {
-        if (isSkipStart || isReverseStart) return
-        if (isComplete) return
+//        if (wasSkippedForward || wasSkippedBackward) return
+//        if (isComplete) return
         if (current < 0) return
         val p = progressBars[current]
-        isReverseStart = true
+        wasSkippedBackward = true
+        wasSkippedForward = false
         p.setMin()
     }
 
@@ -164,23 +166,30 @@ class StoriesProgressView : LinearLayout {
 
     private fun callback(index: Int): PausableProgressBar.Callback {
         return object : PausableProgressBar.Callback {
+
             override fun onStartProgress() {
                 current = index
             }
 
             override fun onFinishProgress() {
-                if (isReverseStart) {
+                if (wasSkippedBackward) {
                     storiesListener?.onPrev()
-                    if (0 <= current - 1) {
+
+                    if (current > 0) {
                         val p = progressBars[current - 1]
                         p.setMinWithoutCallback()
+                        if (current == progressBars.size - 1) {
+                            progressBars[current].setMinWithoutCallback()
+                        }
                         progressBars[--current].startProgress()
                     } else {
                         progressBars[current].startProgress()
                     }
-                    isReverseStart = false
+                    wasSkippedBackward = false
+                    wasSkippedForward = false
                     return
                 }
+
                 val next = current + 1
                 if (next <= progressBars.size - 1) {
                     storiesListener?.onNext()
@@ -189,7 +198,9 @@ class StoriesProgressView : LinearLayout {
                     isComplete = true
                     storiesListener?.onComplete()
                 }
-                isSkipStart = false
+
+                wasSkippedForward = false
+                wasSkippedBackward = false
             }
         }
     }
@@ -218,8 +229,8 @@ class StoriesProgressView : LinearLayout {
         current = -1
         storiesListener = null
         isComplete = false
-        isSkipStart = false
-        isReverseStart = false
+        wasSkippedForward = false
+        wasSkippedBackward = false
     }
 
     /**

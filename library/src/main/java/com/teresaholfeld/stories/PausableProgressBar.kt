@@ -64,6 +64,7 @@ internal class PausableProgressBar constructor(context: Context,
     fun setMinWithoutCallback() {
         animation?.setAnimationListener(null)
         animation?.cancel()
+        frontProgressView?.visibility = View.INVISIBLE
     }
 
     fun setMaxWithoutCallback() {
