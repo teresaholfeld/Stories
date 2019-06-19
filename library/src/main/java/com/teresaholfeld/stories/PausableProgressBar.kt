@@ -14,13 +14,12 @@ import android.widget.FrameLayout
 @SuppressLint("ViewConstructor")
 internal class PausableProgressBar constructor(context: Context,
                                                attrs: AttributeSet? = null,
-                                               private val progressColor: Int,
-                                               private val progressBackgroundColor: Int)
+                                               progressColor: Int,
+                                               progressBackgroundColor: Int)
     : FrameLayout(context, attrs) {
 
     private val frontProgressView: View?
     private val backProgressView: View?
-    private val maxProgressView: View?
 
     private var animation: PausableScaleAnimation? = null
     private var duration = DEFAULT_PROGRESS_DURATION.toLong()
@@ -39,11 +38,9 @@ internal class PausableProgressBar constructor(context: Context,
     init {
         LayoutInflater.from(context).inflate(R.layout.pausable_progress, this)
         frontProgressView = findViewById(R.id.front_progress)
-        maxProgressView = findViewById(R.id.max_progress) // work around
         backProgressView = findViewById(R.id.back_progress)
-        maxProgressView?.setBackgroundColor(progressColor)
         backProgressView?.setBackgroundColor(progressBackgroundColor)
-        maxProgressView?.setBackgroundColor(progressColor)
+        frontProgressView?.setBackgroundColor(progressColor)
     }
 
     fun setDuration(duration: Long) {
@@ -55,38 +52,34 @@ internal class PausableProgressBar constructor(context: Context,
     }
 
     fun setMax() {
-        finishProgress(true)
+        finishProgress()
+        frontProgressView?.clearAnimation()
+        frontProgressView?.visibility = View.VISIBLE
     }
 
     fun setMin() {
-        finishProgress(false)
+        finishProgress()
     }
 
     fun setMinWithoutCallback() {
-        maxProgressView?.setBackgroundColor(progressBackgroundColor)
-        maxProgressView?.visibility = View.VISIBLE
         animation?.setAnimationListener(null)
         animation?.cancel()
     }
 
     fun setMaxWithoutCallback() {
-        maxProgressView?.setBackgroundColor(progressColor)
-        maxProgressView?.visibility = View.VISIBLE
         animation?.setAnimationListener(null)
         animation?.cancel()
+        frontProgressView?.clearAnimation()
+        frontProgressView?.visibility = View.VISIBLE
     }
 
-    private fun finishProgress(isMax: Boolean) {
-        if (isMax) maxProgressView?.setBackgroundColor(progressColor)
-        maxProgressView?.visibility = if (isMax) View.VISIBLE else View.GONE
+    private fun finishProgress() {
         animation?.setAnimationListener(null)
         animation?.cancel()
         callback?.onFinishProgress()
     }
 
     fun startProgress() {
-        maxProgressView?.visibility = View.GONE
-
         animation = PausableScaleAnimation(0f, 1f, 1f, 1f, Animation.ABSOLUTE, 0f,
             Animation.RELATIVE_TO_SELF, 0f)
         animation?.duration = duration
