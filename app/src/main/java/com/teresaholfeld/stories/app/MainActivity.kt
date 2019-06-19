@@ -49,13 +49,13 @@ class MainActivity : AppCompatActivity(), StoriesProgressView.StoriesListener {
         window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
         setContentView(R.layout.activity_main)
 
-        storiesProgressView = findViewById<View>(R.id.stories) as StoriesProgressView
         storiesProgressView?.setStoriesCount(PROGRESS_COUNT)
         storiesProgressView?.setStoryDuration(3000L)
         // or
         // storiesProgressView.setStoriesCountWithDurations(durations);
+
         storiesProgressView?.setStoriesListener(this)
-        //        storiesProgressView.startStories();
+
         counter = 2
         storiesProgressView?.startStories(counter)
 
