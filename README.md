@@ -30,7 +30,7 @@ Add the dependency in your app `build.gradle`:
 
 ```
 dependencies {
-    implementation 'com.github.teresaholfeld:Stories:1.1.2'
+    implementation 'com.github.teresaholfeld:Stories:1.1.3'
 }
 
 ```
@@ -71,7 +71,7 @@ public class YourActivity extends AppCompatActivity implements StoriesProgressVi
 
     @Override
     public void onPrev() {
-        // Call when finished revserse animation.
+        // Called when skipped backwards
         Toast.makeText(this, "onPrev", Toast.LENGTH_SHORT).show();
     }
 
@@ -144,7 +144,7 @@ To do this, you can add the attributes to your layout xml:
 Modifications:
 
 ```
-Copyright (C) 2018 Teresa Holfeld (teresaholfeld), 2017 Shota Saito (shts)
+Copyright (C) 2019 Teresa Holfeld (teresaholfeld), 2017 Shota Saito (shts)
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
