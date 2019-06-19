@@ -49,42 +49,40 @@ To see how a StoriesProgressView can be added to your xml layouts, check the sam
 ```
 Overview
 
-```java
-public class YourActivity extends AppCompatActivity implements StoriesProgressView.StoriesListener {
-    private StoriesProgressView storiesProgressView;
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+```kotlin
+class MainActivity : AppCompatActivity(), StoriesProgressView.StoriesListener {
+    
+    private var storiesProgressView: StoriesProgressView? = null
+    private var counter = 0
+    
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
 
-        storiesProgressView = (StoriesProgressView) findViewById(R.id.stories);
-        storiesProgressView.setStoriesCount(PROGRESS_COUNT); // <- set stories
-        storiesProgressView.setStoryDuration(1200L); // <- set a story duration
-        storiesProgressView.setStoriesListener(this); // <- set listener
-        storiesProgressView.startStories(); // <- start progress
+        storiesProgressView?.setStoriesCount(PROGRESS_COUNT) // <- set stories
+        storiesProgressView?.setStoryDuration(3000L) // <- set a story duration
+        storiesProgressView?.setStoriesListener(this) // <- set listener
+        counter = 2
+        storiesProgressView?.startStories(counter) // <- start progress
+    }
+    
+    override fun onNext() {
+        Toast.makeText(this, "onNext", Toast.LENGTH_SHORT).show()
+    }
+    
+    override fun onPrev() {
+        // Called when skipping to the previous screen
+        Toast.makeText(this, "onPrev", Toast.LENGTH_SHORT).show()
     }
 
-    @Override
-    public void onNext() {
-        Toast.makeText(this, "onNext", Toast.LENGTH_SHORT).show();
+    override fun onComplete() {
+        Toast.makeText(this, "onComplete", Toast.LENGTH_SHORT).show()
     }
 
-    @Override
-    public void onPrev() {
-        // Called when skipped backwards
-        Toast.makeText(this, "onPrev", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onComplete() {
-        Toast.makeText(this, "onComplete", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    protected void onDestroy() {
+    override fun onDestroy() {
         // Very important !
-        storiesProgressView.destroy();
-        super.onDestroy();
+        storiesProgressView?.destroy()
+        super.onDestroy()
     }
 }
 ```
@@ -93,18 +91,18 @@ public class YourActivity extends AppCompatActivity implements StoriesProgressVi
 
 <img src="image/skip-reverse.gif" width="200" />
 
-```java
-  storiesProgressView.skip();
-  storiesProgressView.reverse();
+```kotlin
+  storiesProgressView?.skip()
+  storiesProgressView?.reverse()
 ```
 
 ### Pause and resume the story progress
 
 <img src="image/pause-resume.gif" width="200" />
 
-```java
-  storiesProgressView.pause();
-  storiesProgressView.resume();
+```kotlin
+  storiesProgressView?.pause()
+  storiesProgressView?.resume()
 ```
 
 ### Change the color of the progress bar
@@ -140,8 +138,6 @@ To do this, you can add the attributes to your layout xml:
 
 
 ## License
-
-Modifications:
 
 ```
 Copyright (C) 2019 Teresa Holfeld (teresaholfeld), 2017 Shota Saito (shts)
