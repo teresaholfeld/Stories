@@ -2,6 +2,7 @@ package com.teresaholfeld.stories
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.res.ColorStateList
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +11,7 @@ import android.view.animation.LinearInterpolator
 import android.view.animation.ScaleAnimation
 import android.view.animation.Transformation
 import android.widget.FrameLayout
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import com.google.android.material.shape.CornerFamily
 import com.google.android.material.shape.MaterialShapeDrawable
@@ -46,12 +48,17 @@ internal class PausableProgressBar(
         LayoutInflater.from(context).inflate(R.layout.pausable_progress, this)
         frontProgressView = findViewById(R.id.front_progress)
         backProgressView = findViewById(R.id.back_progress)
-        backProgressView?.setBackgroundColor(progressBackgroundColor)
-        frontProgressView?.setBackgroundColor(progressColor)
-        val allCorners = ShapeAppearanceModel().toBuilder().setAllCorners(CornerFamily.ROUNDED, cornerRadius.toFloat()).build()
+        ViewCompat.setBackground(frontProgressView, createBackgroundDrawable(progressColor, cornerRadius))
+        ViewCompat.setBackground(backProgressView, createBackgroundDrawable(progressBackgroundColor, cornerRadius))
+    }
+
+    private fun createBackgroundDrawable(color: Int, cornerRadius: Int): MaterialShapeDrawable {
+        val allCorners = ShapeAppearanceModel().toBuilder()
+            .setAllCorners(CornerFamily.ROUNDED, cornerRadius.toFloat())
+            .build()
         val materialShapeDrawable = MaterialShapeDrawable(allCorners)
-        ViewCompat.setBackground(frontProgressView, materialShapeDrawable)
-        ViewCompat.setBackground(backProgressView, materialShapeDrawable)
+        materialShapeDrawable.fillColor = ColorStateList.valueOf(color)
+        return materialShapeDrawable
     }
 
     fun setDuration(duration: Long) {
