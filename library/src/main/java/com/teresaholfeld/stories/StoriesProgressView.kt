@@ -5,16 +5,16 @@ package com.teresaholfeld.stories
 import android.annotation.TargetApi
 import android.content.Context
 import android.os.Build
-import android.support.v4.content.ContextCompat
 import android.util.AttributeSet
 import android.view.View
 import android.widget.LinearLayout
+import androidx.core.content.ContextCompat
 import java.util.ArrayList
 
 class StoriesProgressView : LinearLayout {
 
-    private val progressBarLayoutParam = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
-    private val spaceLayoutParam = LinearLayout.LayoutParams(5, LinearLayout.LayoutParams.WRAP_CONTENT)
+    private val progressBarLayoutParam = LayoutParams(0, LayoutParams.WRAP_CONTENT, 1f)
+    private val spaceLayoutParam = LayoutParams(5, LayoutParams.WRAP_CONTENT)
     private val defaultColor = ContextCompat.getColor(context, R.color.progress_primary)
     private val defaultBackgroundColor = ContextCompat.getColor(context, R.color.progress_secondary)
 
@@ -24,6 +24,7 @@ class StoriesProgressView : LinearLayout {
     private val progressBars = ArrayList<PausableProgressBar>()
 
     private var storiesCount = -1
+
     /**
      * pointer of running animation
      */
@@ -42,7 +43,8 @@ class StoriesProgressView : LinearLayout {
         fun onComplete()
     }
 
-    @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null) : super(context, attrs) {
+    @JvmOverloads
+    constructor(context: Context, attrs: AttributeSet? = null) : super(context, attrs) {
         init(context, attrs)
     }
 
@@ -57,7 +59,7 @@ class StoriesProgressView : LinearLayout {
     }
 
     private fun init(context: Context, attrs: AttributeSet?) {
-        orientation = LinearLayout.HORIZONTAL
+        orientation = HORIZONTAL
         val typedArray = context.obtainStyledAttributes(attrs, R.styleable.StoriesProgressView)
         storiesCount = typedArray.getInt(R.styleable.StoriesProgressView_progressCount, 0)
         progressColor = typedArray.getColor(R.styleable.StoriesProgressView_progressColor, defaultColor)

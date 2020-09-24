@@ -115,14 +115,14 @@ internal class PausableProgressBar constructor(context: Context,
         animation = null
     }
 
-    private inner class PausableScaleAnimation internal constructor(fromX: Float,
-                                                                    toX: Float,
-                                                                    fromY: Float,
-                                                                    toY: Float,
-                                                                    pivotXType: Int,
-                                                                    pivotXValue: Float,
-                                                                    pivotYType: Int,
-                                                                    pivotYValue: Float)
+    private inner class PausableScaleAnimation(fromX: Float,
+                                               toX: Float,
+                                               fromY: Float,
+                                               toY: Float,
+                                               pivotXType: Int,
+                                               pivotXValue: Float,
+                                               pivotYType: Int,
+                                               pivotYValue: Float)
         : ScaleAnimation(fromX, toX, fromY, toY, pivotXType, pivotXValue, pivotYType, pivotYValue) {
 
         private var mElapsedAtPause: Long = 0
@@ -141,7 +141,7 @@ internal class PausableProgressBar constructor(context: Context,
         /***
          * pause animation
          */
-        internal fun pause() {
+        fun pause() {
             if (mPaused) return
             mElapsedAtPause = 0
             mPaused = true
@@ -150,7 +150,7 @@ internal class PausableProgressBar constructor(context: Context,
         /***
          * resume animation
          */
-        internal fun resume() {
+        fun resume() {
             mPaused = false
         }
     }

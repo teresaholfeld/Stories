@@ -1,11 +1,11 @@
 package com.teresaholfeld.stories.app
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.view.MotionEvent
 import android.view.View
 import android.view.WindowManager
 import android.widget.ImageView
+import androidx.appcompat.app.AppCompatActivity
 import com.teresaholfeld.stories.StoriesProgressView
 
 class MainActivity : AppCompatActivity(), StoriesProgressView.StoriesListener {
@@ -15,12 +15,12 @@ class MainActivity : AppCompatActivity(), StoriesProgressView.StoriesListener {
 
     private var counter = 0
     private val resources = intArrayOf(
-            R.drawable.sample1,
-            R.drawable.sample2,
-            R.drawable.sample3,
-            R.drawable.sample4,
-            R.drawable.sample5,
-            R.drawable.sample6
+        R.drawable.sample1,
+        R.drawable.sample2,
+        R.drawable.sample3,
+        R.drawable.sample4,
+        R.drawable.sample5,
+        R.drawable.sample6
     )
 
     private val durations = longArrayOf(500L, 1000L, 1500L, 4000L, 5000L, 1000)
