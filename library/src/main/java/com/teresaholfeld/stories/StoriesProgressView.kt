@@ -9,7 +9,6 @@ import android.util.AttributeSet
 import android.view.View
 import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
-import java.util.ArrayList
 
 class StoriesProgressView : LinearLayout {
 
@@ -27,7 +26,7 @@ class StoriesProgressView : LinearLayout {
     private var progressColor = defaultColor
     private var progressBackgroundColor = defaultBackgroundColor
 
-    private val progressBars = ArrayList<PausableProgressBar>()
+    private val progressBars = mutableListOf<PausableProgressBar>()
 
     private var storiesCount = -1
 
