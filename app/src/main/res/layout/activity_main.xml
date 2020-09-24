@@ -41,6 +41,5 @@
         android:paddingRight="8dp"
         app:progressBackgroundColor="@color/purple"
         app:progressColor="@color/colorAccent"
-        app:progressGap="8dp"
-        app:progressHeight="40dp" />
+        app:progressGap="8dp" />
 </merge>

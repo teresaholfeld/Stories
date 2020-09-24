@@ -13,17 +13,12 @@ import java.util.ArrayList
 
 class StoriesProgressView : LinearLayout {
 
-    private var progressHeightInPixels: Int? = null
-    private val defaultHeight = LayoutParams.WRAP_CONTENT
-    private val actualHeight by lazy { progressHeightInPixels ?: defaultHeight }
-    private val progressBarLayoutParams by lazy {
-        LayoutParams(0, actualHeight, 1f)
-    }
+    private val progressBarLayoutParams = LayoutParams(0, LayoutParams.MATCH_PARENT, 1f)
 
     private var progressGapInPixels: Int? = null
     private val defaultGap = 5
     private val gapLayoutParams by lazy {
-        LayoutParams(progressGapInPixels ?: defaultGap, actualHeight)
+        LayoutParams(progressGapInPixels ?: defaultGap, LayoutParams.MATCH_PARENT)
     }
 
     private val defaultColor = ContextCompat.getColor(context, R.color.progress_primary)
@@ -75,7 +70,6 @@ class StoriesProgressView : LinearLayout {
         storiesCount = typedArray.getInt(R.styleable.StoriesProgressView_progressCount, 0)
         progressColor = typedArray.getColor(R.styleable.StoriesProgressView_progressColor, defaultColor)
         progressBackgroundColor = typedArray.getColor(R.styleable.StoriesProgressView_progressBackgroundColor, defaultBackgroundColor)
-        progressHeightInPixels = typedArray.getDimensionPixelSize(R.styleable.StoriesProgressView_progressHeight, 0)
         progressGapInPixels = typedArray.getDimensionPixelSize(R.styleable.StoriesProgressView_progressGap, 0)
         typedArray.recycle()
         bindViews()
