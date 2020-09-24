@@ -34,12 +34,13 @@
     <com.teresaholfeld.stories.StoriesProgressView
         android:id="@+id/stories"
         android:layout_width="match_parent"
-        android:layout_height="4dp"
+        android:layout_height="16dp"
         android:layout_gravity="top"
         android:layout_marginTop="8dp"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
         app:progressBackgroundColor="@color/purple"
+        app:cornerRadius="4dp"
         app:progressColor="@color/colorAccent"
         app:progressGap="4dp" />
 </merge>

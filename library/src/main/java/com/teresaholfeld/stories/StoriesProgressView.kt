@@ -14,11 +14,14 @@ class StoriesProgressView : LinearLayout {
 
     private val progressBarLayoutParams = LayoutParams(0, LayoutParams.MATCH_PARENT, 1f)
 
-    private var progressGapInPixels: Int? = null
     private val defaultGap = 5
+    private var progressGapInPixels = defaultGap
     private val gapLayoutParams by lazy {
-        LayoutParams(progressGapInPixels ?: defaultGap, LayoutParams.MATCH_PARENT)
+
     }
+
+    private val defaultCornerRadius = 0
+    private var progressCornerRadius = defaultCornerRadius
 
     private val defaultColor = ContextCompat.getColor(context, R.color.progress_primary)
     private val defaultBackgroundColor = ContextCompat.getColor(context, R.color.progress_secondary)
@@ -70,6 +73,7 @@ class StoriesProgressView : LinearLayout {
         progressColor = typedArray.getColor(R.styleable.StoriesProgressView_progressColor, defaultColor)
         progressBackgroundColor = typedArray.getColor(R.styleable.StoriesProgressView_progressBackgroundColor, defaultBackgroundColor)
         progressGapInPixels = typedArray.getDimensionPixelSize(R.styleable.StoriesProgressView_progressGap, 0)
+        progressCornerRadius = typedArray.getDimensionPixelSize(R.styleable.StoriesProgressView_cornerRadius, 0)
         typedArray.recycle()
         bindViews()
     }
@@ -89,14 +93,14 @@ class StoriesProgressView : LinearLayout {
     }
 
     private fun createProgressBar(): PausableProgressBar {
-        val p = PausableProgressBar(context, progressColor, progressBackgroundColor)
+        val p = PausableProgressBar(context, progressColor, progressBackgroundColor, progressCornerRadius)
         p.layoutParams = progressBarLayoutParams
         return p
     }
 
     private fun createSpace(): View {
         val v = View(context)
-        v.layoutParams = gapLayoutParams
+        v.layoutParams = LayoutParams(progressGapInPixels, LayoutParams.MATCH_PARENT)
         return v
     }
 
