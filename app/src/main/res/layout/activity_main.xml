@@ -34,7 +34,7 @@
     <com.teresaholfeld.stories.StoriesProgressView
         android:id="@+id/stories"
         android:layout_width="match_parent"
-        android:layout_height="3dp"
+        android:layout_height="40dp"
         android:layout_gravity="top"
         android:layout_marginTop="8dp"
         android:paddingLeft="8dp"
