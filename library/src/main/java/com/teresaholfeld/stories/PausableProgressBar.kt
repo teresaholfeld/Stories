@@ -115,7 +115,7 @@ internal class PausableProgressBar constructor(context: Context,
         animation = null
     }
 
-    private inner class PausableScaleAnimation(fromX: Float,
+    private class PausableScaleAnimation(fromX: Float,
                                                toX: Float,
                                                fromY: Float,
                                                toY: Float,
