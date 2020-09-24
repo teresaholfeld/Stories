@@ -2,6 +2,7 @@ package com.teresaholfeld.stories
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.res.ColorStateList
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
@@ -10,13 +11,26 @@ import android.view.animation.LinearInterpolator
 import android.view.animation.ScaleAnimation
 import android.view.animation.Transformation
 import android.widget.FrameLayout
+import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
+import com.google.android.material.shape.CornerFamily
+import com.google.android.material.shape.MaterialShapeDrawable
+import com.google.android.material.shape.ShapeAppearanceModel
 
 @SuppressLint("ViewConstructor")
-internal class PausableProgressBar constructor(context: Context,
-                                               attrs: AttributeSet? = null,
-                                               progressColor: Int,
-                                               progressBackgroundColor: Int)
-    : FrameLayout(context, attrs) {
+internal class PausableProgressBar(
+    context: Context,
+    attrs: AttributeSet? = null,
+    progressColor: Int,
+    progressBackgroundColor: Int,
+    cornerRadius: Int
+) : FrameLayout(context, attrs) {
+    constructor(
+        context: Context,
+        progressColor: Int,
+        progressBackgroundColor: Int,
+        cornerRadius: Int
+    ) : this(context, null, progressColor, progressBackgroundColor, cornerRadius)
 
     private val frontProgressView: View?
     private val backProgressView: View?
@@ -30,17 +44,21 @@ internal class PausableProgressBar constructor(context: Context,
         fun onFinishProgress()
     }
 
-    constructor(context: Context,
-                progressColor: Int,
-                progressBackgroundColor: Int)
-        : this(context, null, progressColor, progressBackgroundColor)
-
     init {
         LayoutInflater.from(context).inflate(R.layout.pausable_progress, this)
         frontProgressView = findViewById(R.id.front_progress)
         backProgressView = findViewById(R.id.back_progress)
-        backProgressView?.setBackgroundColor(progressBackgroundColor)
-        frontProgressView?.setBackgroundColor(progressColor)
+        ViewCompat.setBackground(frontProgressView, createBackgroundDrawable(progressColor, cornerRadius))
+        ViewCompat.setBackground(backProgressView, createBackgroundDrawable(progressBackgroundColor, cornerRadius))
+    }
+
+    private fun createBackgroundDrawable(color: Int, cornerRadius: Int): MaterialShapeDrawable {
+        val allCorners = ShapeAppearanceModel().toBuilder()
+            .setAllCorners(CornerFamily.ROUNDED, cornerRadius.toFloat())
+            .build()
+        val materialShapeDrawable = MaterialShapeDrawable(allCorners)
+        materialShapeDrawable.fillColor = ColorStateList.valueOf(color)
+        return materialShapeDrawable
     }
 
     fun setDuration(duration: Long) {
@@ -115,14 +133,14 @@ internal class PausableProgressBar constructor(context: Context,
         animation = null
     }
 
-    private inner class PausableScaleAnimation internal constructor(fromX: Float,
-                                                                    toX: Float,
-                                                                    fromY: Float,
-                                                                    toY: Float,
-                                                                    pivotXType: Int,
-                                                                    pivotXValue: Float,
-                                                                    pivotYType: Int,
-                                                                    pivotYValue: Float)
+    private class PausableScaleAnimation(fromX: Float,
+                                         toX: Float,
+                                         fromY: Float,
+                                         toY: Float,
+                                         pivotXType: Int,
+                                         pivotXValue: Float,
+                                         pivotYType: Int,
+                                         pivotYValue: Float)
         : ScaleAnimation(fromX, toX, fromY, toY, pivotXType, pivotXValue, pivotYType, pivotYValue) {
 
         private var mElapsedAtPause: Long = 0
@@ -141,7 +159,7 @@ internal class PausableProgressBar constructor(context: Context,
         /***
          * pause animation
          */
-        internal fun pause() {
+        fun pause() {
             if (mPaused) return
             mElapsedAtPause = 0
             mPaused = true
@@ -150,7 +168,7 @@ internal class PausableProgressBar constructor(context: Context,
         /***
          * resume animation
          */
-        internal fun resume() {
+        fun resume() {
             mPaused = false
         }
     }

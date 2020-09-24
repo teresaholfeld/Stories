@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="StoriesProgressView">
-        <attr name="progressCount" format="integer|reference"/>
-        <attr name="progressColor" format="color"/>
-        <attr name="progressBackgroundColor" format="color"/>
+        <attr name="progressCount" format="integer|reference" />
+        <attr name="progressColor" format="color" />
+        <attr name="progressBackgroundColor" format="color" />
+        <attr name="progressGap" format="dimension" />
+        <attr name="cornerRadius" format="dimension" />
     </declare-styleable>
 </resources>

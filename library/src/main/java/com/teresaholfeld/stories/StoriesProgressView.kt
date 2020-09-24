@@ -5,25 +5,34 @@ package com.teresaholfeld.stories
 import android.annotation.TargetApi
 import android.content.Context
 import android.os.Build
-import android.support.v4.content.ContextCompat
 import android.util.AttributeSet
 import android.view.View
 import android.widget.LinearLayout
-import java.util.ArrayList
+import androidx.core.content.ContextCompat
 
 class StoriesProgressView : LinearLayout {
 
-    private val progressBarLayoutParam = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
-    private val spaceLayoutParam = LinearLayout.LayoutParams(5, LinearLayout.LayoutParams.WRAP_CONTENT)
+    private val progressBarLayoutParams = LayoutParams(0, LayoutParams.MATCH_PARENT, 1f)
+
+    private val defaultGap = 5
+    private var progressGapInPixels = defaultGap
+    private val gapLayoutParams by lazy {
+
+    }
+
+    private val defaultCornerRadius = 0
+    private var progressCornerRadius = defaultCornerRadius
+
     private val defaultColor = ContextCompat.getColor(context, R.color.progress_primary)
     private val defaultBackgroundColor = ContextCompat.getColor(context, R.color.progress_secondary)
 
     private var progressColor = defaultColor
     private var progressBackgroundColor = defaultBackgroundColor
 
-    private val progressBars = ArrayList<PausableProgressBar>()
+    private val progressBars = mutableListOf<PausableProgressBar>()
 
     private var storiesCount = -1
+
     /**
      * pointer of running animation
      */
@@ -42,7 +51,8 @@ class StoriesProgressView : LinearLayout {
         fun onComplete()
     }
 
-    @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null) : super(context, attrs) {
+    @JvmOverloads
+    constructor(context: Context, attrs: AttributeSet? = null) : super(context, attrs) {
         init(context, attrs)
     }
 
@@ -57,12 +67,13 @@ class StoriesProgressView : LinearLayout {
     }
 
     private fun init(context: Context, attrs: AttributeSet?) {
-        orientation = LinearLayout.HORIZONTAL
+        orientation = HORIZONTAL
         val typedArray = context.obtainStyledAttributes(attrs, R.styleable.StoriesProgressView)
         storiesCount = typedArray.getInt(R.styleable.StoriesProgressView_progressCount, 0)
         progressColor = typedArray.getColor(R.styleable.StoriesProgressView_progressColor, defaultColor)
-        progressBackgroundColor = typedArray.getColor(R.styleable.StoriesProgressView_progressBackgroundColor,
-            defaultBackgroundColor)
+        progressBackgroundColor = typedArray.getColor(R.styleable.StoriesProgressView_progressBackgroundColor, defaultBackgroundColor)
+        progressGapInPixels = typedArray.getDimensionPixelSize(R.styleable.StoriesProgressView_progressGap, 0)
+        progressCornerRadius = typedArray.getDimensionPixelSize(R.styleable.StoriesProgressView_cornerRadius, 0)
         typedArray.recycle()
         bindViews()
     }
@@ -82,14 +93,14 @@ class StoriesProgressView : LinearLayout {
     }
 
     private fun createProgressBar(): PausableProgressBar {
-        val p = PausableProgressBar(context, progressColor, progressBackgroundColor)
-        p.layoutParams = progressBarLayoutParam
+        val p = PausableProgressBar(context, progressColor, progressBackgroundColor, progressCornerRadius)
+        p.layoutParams = progressBarLayoutParams
         return p
     }
 
     private fun createSpace(): View {
         val v = View(context)
-        v.layoutParams = spaceLayoutParam
+        v.layoutParams = LayoutParams(progressGapInPixels, LayoutParams.MATCH_PARENT)
         return v
     }
 
