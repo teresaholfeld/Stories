@@ -13,8 +13,19 @@ import java.util.ArrayList
 
 class StoriesProgressView : LinearLayout {
 
-    private val progressBarLayoutParam = LayoutParams(0, LayoutParams.WRAP_CONTENT, 1f)
-    private val spaceLayoutParam = LayoutParams(5, LayoutParams.WRAP_CONTENT)
+    private var progressHeightInPixels: Int? = null
+    private val defaultHeight = LayoutParams.WRAP_CONTENT
+    private val actualHeight by lazy { progressHeightInPixels ?: defaultHeight }
+    private val progressBarLayoutParams by lazy {
+        LayoutParams(0, actualHeight, 1f)
+    }
+
+    private var progressGapInPixels: Int? = null
+    private val defaultGap = 5
+    private val gapLayoutParams by lazy {
+        LayoutParams(progressGapInPixels ?: defaultGap, actualHeight)
+    }
+
     private val defaultColor = ContextCompat.getColor(context, R.color.progress_primary)
     private val defaultBackgroundColor = ContextCompat.getColor(context, R.color.progress_secondary)
 
@@ -63,8 +74,9 @@ class StoriesProgressView : LinearLayout {
         val typedArray = context.obtainStyledAttributes(attrs, R.styleable.StoriesProgressView)
         storiesCount = typedArray.getInt(R.styleable.StoriesProgressView_progressCount, 0)
         progressColor = typedArray.getColor(R.styleable.StoriesProgressView_progressColor, defaultColor)
-        progressBackgroundColor = typedArray.getColor(R.styleable.StoriesProgressView_progressBackgroundColor,
-            defaultBackgroundColor)
+        progressBackgroundColor = typedArray.getColor(R.styleable.StoriesProgressView_progressBackgroundColor, defaultBackgroundColor)
+        progressHeightInPixels = typedArray.getDimensionPixelSize(R.styleable.StoriesProgressView_progressHeight, 0)
+        progressGapInPixels = typedArray.getDimensionPixelSize(R.styleable.StoriesProgressView_progressGap, 0)
         typedArray.recycle()
         bindViews()
     }
@@ -85,13 +97,13 @@ class StoriesProgressView : LinearLayout {
 
     private fun createProgressBar(): PausableProgressBar {
         val p = PausableProgressBar(context, progressColor, progressBackgroundColor)
-        p.layoutParams = progressBarLayoutParam
+        p.layoutParams = progressBarLayoutParams
         return p
     }
 
     private fun createSpace(): View {
         val v = View(context)
-        v.layoutParams = spaceLayoutParam
+        v.layoutParams = gapLayoutParams
         return v
     }
 
