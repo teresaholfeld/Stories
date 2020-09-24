@@ -16,9 +16,6 @@ class StoriesProgressView : LinearLayout {
 
     private val defaultGap = 5
     private var progressGapInPixels = defaultGap
-    private val gapLayoutParams by lazy {
-
-    }
 
     private val defaultCornerRadius = 0
     private var progressCornerRadius = defaultCornerRadius

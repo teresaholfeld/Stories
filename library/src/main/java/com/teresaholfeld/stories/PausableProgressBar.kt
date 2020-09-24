@@ -11,7 +11,6 @@ import android.view.animation.LinearInterpolator
 import android.view.animation.ScaleAnimation
 import android.view.animation.Transformation
 import android.widget.FrameLayout
-import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import com.google.android.material.shape.CornerFamily
 import com.google.android.material.shape.MaterialShapeDrawable
