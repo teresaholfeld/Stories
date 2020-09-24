@@ -69,8 +69,8 @@ class StoriesProgressView : LinearLayout {
         storiesCount = typedArray.getInt(R.styleable.StoriesProgressView_progressCount, 0)
         progressColor = typedArray.getColor(R.styleable.StoriesProgressView_progressColor, defaultColor)
         progressBackgroundColor = typedArray.getColor(R.styleable.StoriesProgressView_progressBackgroundColor, defaultBackgroundColor)
-        progressGapInPixels = typedArray.getDimensionPixelSize(R.styleable.StoriesProgressView_progressGap, 0)
-        progressCornerRadius = typedArray.getDimensionPixelSize(R.styleable.StoriesProgressView_cornerRadius, 0)
+        progressGapInPixels = typedArray.getDimensionPixelSize(R.styleable.StoriesProgressView_progressGap, defaultGap)
+        progressCornerRadius = typedArray.getDimensionPixelSize(R.styleable.StoriesProgressView_cornerRadius, defaultCornerRadius)
         typedArray.recycle()
         bindViews()
     }
