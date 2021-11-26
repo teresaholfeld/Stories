@@ -38,6 +38,7 @@ class MainActivity : Activity(), StoriesProgressView.StoriesListener {
             MotionEvent.ACTION_UP -> {
                 val now = System.currentTimeMillis()
                 storiesProgressView?.resume()
+                v.performClick()
                 return@OnTouchListener limit < now - pressTime
             }
         }
