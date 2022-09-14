@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
-       xmlns:app="http://schemas.android.com/apk/res-auto"
-       xmlns:tools="http://schemas.android.com/tools"
-       android:layout_width="match_parent"
-       android:layout_height="match_parent">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <ImageView
         android:id="@+id/image"
@@ -11,7 +11,7 @@
         android:layout_height="match_parent"
         android:contentDescription="@null"
         android:scaleType="centerCrop"
-        tools:src="@drawable/sample1"/>
+        tools:src="@drawable/sample1" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -22,23 +22,25 @@
             android:id="@+id/reverse"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"/>
+            android:layout_weight="1" />
 
         <View
             android:id="@+id/skip"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"/>
+            android:layout_weight="1" />
     </LinearLayout>
 
     <com.teresaholfeld.stories.StoriesProgressView
         android:id="@+id/stories"
         android:layout_width="match_parent"
-        android:layout_height="3dp"
+        android:layout_height="8dp"
         android:layout_gravity="top"
         android:layout_marginTop="8dp"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
         app:progressBackgroundColor="@color/purple"
-        app:progressColor="@color/colorAccent"/>
+        app:cornerRadius="4dp"
+        app:progressColor="@color/colorAccent"
+        app:progressGap="4dp" />
 </merge>

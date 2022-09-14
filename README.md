@@ -135,7 +135,8 @@ To do this, you can add the attributes to your layout xml:
    <!-- ... -->
 </LinearLayout>
 ```
-
+## Compose support
+None planned. PRs welcome!
 
 ## License
 
