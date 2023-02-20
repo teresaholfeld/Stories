@@ -12,11 +12,13 @@ import android.view.animation.Transformation
 import android.widget.FrameLayout
 
 @SuppressLint("ViewConstructor")
-internal class PausableProgressBar constructor(context: Context,
-                                               attrs: AttributeSet? = null,
-                                               progressColor: Int,
-                                               progressBackgroundColor: Int)
-    : FrameLayout(context, attrs) {
+class PausableStoriesProgressBar constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    progressColor: Int,
+    progressBackgroundColor: Int
+)
+    : FrameLayout(context, attrs), StoriesProgressBar {
 
     private val frontProgressView: View?
     private val backProgressView: View?
@@ -25,14 +27,16 @@ internal class PausableProgressBar constructor(context: Context,
     private var duration = DEFAULT_PROGRESS_DURATION.toLong()
     private var callback: Callback? = null
 
-    internal interface Callback {
+    interface Callback {
         fun onStartProgress()
         fun onFinishProgress()
     }
 
-    constructor(context: Context,
-                progressColor: Int,
-                progressBackgroundColor: Int)
+    constructor(
+        context: Context,
+        progressColor: Int,
+        progressBackgroundColor: Int
+    )
         : this(context, null, progressColor, progressBackgroundColor)
 
     init {
@@ -43,31 +47,31 @@ internal class PausableProgressBar constructor(context: Context,
         frontProgressView?.setBackgroundColor(progressColor)
     }
 
-    fun setDuration(duration: Long) {
+    override fun setDuration(duration: Long) {
         this.duration = duration
     }
 
-    fun setCallback(callback: Callback) {
+    override fun setCallback(callback: Callback) {
         this.callback = callback
     }
 
-    fun setMax() {
+    override  fun setMax() {
         finishProgress()
         frontProgressView?.clearAnimation()
         frontProgressView?.visibility = View.VISIBLE
     }
 
-    fun setMin() {
+    override fun setMin() {
         finishProgress()
     }
 
-    fun setMinWithoutCallback() {
+    override  fun setMinWithoutCallback() {
         animation?.setAnimationListener(null)
         animation?.cancel()
         frontProgressView?.visibility = View.INVISIBLE
     }
 
-    fun setMaxWithoutCallback() {
+    override fun setMaxWithoutCallback() {
         animation?.setAnimationListener(null)
         animation?.cancel()
         frontProgressView?.clearAnimation()
@@ -80,7 +84,7 @@ internal class PausableProgressBar constructor(context: Context,
         callback?.onFinishProgress()
     }
 
-    fun startProgress() {
+    override fun startProgress() {
         animation = PausableScaleAnimation(0f, 1f, 1f, 1f, Animation.ABSOLUTE, 0f,
             Animation.RELATIVE_TO_SELF, 0f)
         animation?.duration = duration
@@ -101,28 +105,30 @@ internal class PausableProgressBar constructor(context: Context,
         frontProgressView?.startAnimation(animation)
     }
 
-    fun pauseProgress() {
+    override fun pauseProgress() {
         animation?.pause()
     }
 
-    fun resumeProgress() {
+    override fun resumeProgress() {
         animation?.resume()
     }
 
-    fun clear() {
+    override fun clear() {
         animation?.setAnimationListener(null)
         animation?.cancel()
         animation = null
     }
 
-    private inner class PausableScaleAnimation internal constructor(fromX: Float,
-                                                                    toX: Float,
-                                                                    fromY: Float,
-                                                                    toY: Float,
-                                                                    pivotXType: Int,
-                                                                    pivotXValue: Float,
-                                                                    pivotYType: Int,
-                                                                    pivotYValue: Float)
+    private inner class PausableScaleAnimation internal constructor(
+        fromX: Float,
+        toX: Float,
+        fromY: Float,
+        toY: Float,
+        pivotXType: Int,
+        pivotXValue: Float,
+        pivotYType: Int,
+        pivotYValue: Float
+    )
         : ScaleAnimation(fromX, toX, fromY, toY, pivotXType, pivotXValue, pivotYType, pivotYValue) {
 
         private var mElapsedAtPause: Long = 0
@@ -156,6 +162,6 @@ internal class PausableProgressBar constructor(context: Context,
     }
 
     companion object {
-        private const val DEFAULT_PROGRESS_DURATION = 2000
+        const val DEFAULT_PROGRESS_DURATION = 2000
     }
 }

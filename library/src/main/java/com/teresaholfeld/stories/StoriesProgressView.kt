@@ -5,11 +5,11 @@ package com.teresaholfeld.stories
 import android.annotation.TargetApi
 import android.content.Context
 import android.os.Build
-import androidx.core.content.ContextCompat
 import android.util.AttributeSet
 import android.view.View
 import android.widget.LinearLayout
-import java.util.ArrayList
+import androidx.core.content.ContextCompat
+import java.util.concurrent.atomic.AtomicBoolean
 
 class StoriesProgressView : LinearLayout {
 
@@ -21,9 +21,10 @@ class StoriesProgressView : LinearLayout {
     private var progressColor = defaultColor
     private var progressBackgroundColor = defaultBackgroundColor
 
-    private val progressBars = ArrayList<PausableProgressBar>()
+    private val storiesProgressBars = ArrayList<StoriesProgressBar>()
 
     private var storiesCount = -1
+
     /**
      * pointer of running animation
      */
@@ -42,7 +43,8 @@ class StoriesProgressView : LinearLayout {
         fun onComplete()
     }
 
-    @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null) : super(context, attrs) {
+    @JvmOverloads
+    constructor(context: Context, attrs: AttributeSet? = null) : super(context, attrs) {
         init(context, attrs)
     }
 
@@ -68,23 +70,30 @@ class StoriesProgressView : LinearLayout {
     }
 
     private fun bindViews() {
-        progressBars.clear()
+        storiesProgressBars.clear()
         removeAllViews()
 
         for (i in 0 until storiesCount) {
             val p = createProgressBar()
-            progressBars.add(p)
-            addView(p)
+            storiesProgressBars.add(p)
+            if (p is PausableStoriesProgressBar) {
+                addView(p)
+            }
             if (i + 1 < storiesCount) {
                 addView(createSpace())
             }
         }
     }
 
-    private fun createProgressBar(): PausableProgressBar {
-        val p = PausableProgressBar(context, progressColor, progressBackgroundColor)
-        p.layoutParams = progressBarLayoutParam
-        return p
+    private fun createProgressBar(): StoriesProgressBar {
+        if (isRunningTest()) {
+            return EspressoTestPausableStoriesProgressBar()
+        } else {
+            val p = PausableStoriesProgressBar(context, progressColor, progressBackgroundColor)
+            p.layoutParams = progressBarLayoutParam
+            return p
+        }
+
     }
 
     private fun createSpace(): View {
@@ -116,8 +125,8 @@ class StoriesProgressView : LinearLayout {
      * Skip current story
      */
     fun skip() {
-        if (current >= progressBars.size || current < 0) return
-        val p = progressBars[current]
+        if (current >= storiesProgressBars.size || current < 0) return
+        val p = storiesProgressBars[current]
         wasSkippedForward = true
         wasSkippedBackward = false
         p.setMax()
@@ -128,7 +137,7 @@ class StoriesProgressView : LinearLayout {
      */
     fun reverse() {
         if (current < 0) return
-        val p = progressBars[current]
+        val p = storiesProgressBars[current]
         wasSkippedBackward = true
         wasSkippedForward = false
         p.setMin()
@@ -140,9 +149,9 @@ class StoriesProgressView : LinearLayout {
      * @param duration millisecond
      */
     fun setStoryDuration(duration: Long) {
-        for (i in progressBars.indices) {
-            progressBars[i].setDuration(duration)
-            progressBars[i].setCallback(callback(i))
+        for (i in storiesProgressBars.indices) {
+            storiesProgressBars[i].setDuration(duration)
+            storiesProgressBars[i].setCallback(callback(i))
         }
     }
 
@@ -154,14 +163,14 @@ class StoriesProgressView : LinearLayout {
     fun setStoriesCountWithDurations(durations: LongArray) {
         storiesCount = durations.size
         bindViews()
-        for (i in progressBars.indices) {
-            progressBars[i].setDuration(durations[i])
-            progressBars[i].setCallback(callback(i))
+        for (i in storiesProgressBars.indices) {
+            storiesProgressBars[i].setDuration(durations[i])
+            storiesProgressBars[i].setCallback(callback(i))
         }
     }
 
-    private fun callback(index: Int): PausableProgressBar.Callback {
-        return object : PausableProgressBar.Callback {
+    private fun callback(index: Int): PausableStoriesProgressBar.Callback {
+        return object : PausableStoriesProgressBar.Callback {
 
             override fun onStartProgress() {
                 current = index
@@ -172,14 +181,14 @@ class StoriesProgressView : LinearLayout {
                     storiesListener?.onPrev()
 
                     if (current > 0) {
-                        val p = progressBars[current - 1]
+                        val p = storiesProgressBars[current - 1]
                         p.setMinWithoutCallback()
-                        if (current == progressBars.size - 1) {
-                            progressBars[current].setMinWithoutCallback()
+                        if (current == storiesProgressBars.size - 1) {
+                            storiesProgressBars[current].setMinWithoutCallback()
                         }
-                        progressBars[--current].startProgress()
+                        storiesProgressBars[--current].startProgress()
                     } else {
-                        progressBars[current].startProgress()
+                        storiesProgressBars[current].startProgress()
                     }
                     wasSkippedBackward = false
                     wasSkippedForward = false
@@ -187,9 +196,9 @@ class StoriesProgressView : LinearLayout {
                 }
 
                 val next = current + 1
-                if (next <= progressBars.size - 1) {
+                if (next <= storiesProgressBars.size - 1) {
                     storiesListener?.onNext()
-                    progressBars[next].startProgress()
+                    storiesProgressBars[next].startProgress()
                 } else {
                     isComplete = true
                     storiesListener?.onComplete()
@@ -205,22 +214,22 @@ class StoriesProgressView : LinearLayout {
      * Start progress animation
      */
     fun startStories() {
-        progressBars.getOrNull(0)?.startProgress()
+        storiesProgressBars.getOrNull(0)?.startProgress()
     }
 
     /**
      * Start progress animation from specific progress
      */
     fun startStories(from: Int) {
-        if (progressBars.size == 0) return
+        if (storiesProgressBars.size == 0) return
         for (i in 0 until from) {
-            progressBars[i].setMaxWithoutCallback()
+            storiesProgressBars[i].setMaxWithoutCallback()
         }
-        progressBars[from].startProgress()
+        storiesProgressBars[from].startProgress()
     }
 
     fun clear() {
-        progressBars.clear()
+        storiesProgressBars.clear()
         storiesCount = -1
         current = -1
         storiesListener = null
@@ -234,7 +243,7 @@ class StoriesProgressView : LinearLayout {
      */
     fun destroy() {
         clear()
-        for (p in progressBars) {
+        for (p in storiesProgressBars) {
             p.clear()
         }
     }
@@ -244,7 +253,7 @@ class StoriesProgressView : LinearLayout {
      */
     fun pause() {
         if (current < 0) return
-        progressBars.getOrNull(current)?.pauseProgress()
+        storiesProgressBars.getOrNull(current)?.pauseProgress()
     }
 
     /**
@@ -252,6 +261,26 @@ class StoriesProgressView : LinearLayout {
      */
     fun resume() {
         if (current < 0) return
-        progressBars.getOrNull(current)?.resumeProgress()
+        storiesProgressBars.getOrNull(current)?.resumeProgress()
     }
+
+    companion object {
+        private var isRunningTest: AtomicBoolean? = null
+
+        @Synchronized
+        fun isRunningTest(): Boolean {
+            if (null == isRunningTest) {
+                val istest: Boolean = try {
+                    // "android.support.test.espresso.Espresso" if you haven't migrated to androidx yet
+                    Class.forName("androidx.test.espresso.Espresso")
+                    true
+                } catch (e: ClassNotFoundException) {
+                    false
+                }
+                isRunningTest = AtomicBoolean(istest)
+            }
+            return isRunningTest!!.get()
+        }
+    }
+
 }
