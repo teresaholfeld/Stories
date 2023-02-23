@@ -39,10 +39,11 @@ class EspressoTestPausableStoriesProgressBar : StoriesProgressBar {
     }
 
     override fun startProgress() {
-        animation = object : CountDownTimerWithPause(duration,1000L, true) {
+        animation = object : CountDownTimerWithPause(duration, 1000L, true) {
             override fun onTick(p0: Long) {
-                Log.d("this","okay tick $p0")
+                Log.d("this", "okay tick $p0")
             }
+
             override fun onFinish() {
                 callback?.onFinishProgress()
             }

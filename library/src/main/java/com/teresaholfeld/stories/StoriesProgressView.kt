@@ -2,9 +2,7 @@
 
 package com.teresaholfeld.stories
 
-import android.annotation.TargetApi
 import android.content.Context
-import android.os.Build
 import android.util.AttributeSet
 import android.view.View
 import android.widget.LinearLayout
@@ -52,9 +50,12 @@ class StoriesProgressView : LinearLayout {
         init(context, attrs)
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int, defStyleRes: Int)
-        : super(context, attrs, defStyleAttr, defStyleRes) {
+    constructor(
+        context: Context,
+        attrs: AttributeSet,
+        defStyleAttr: Int,
+        defStyleRes: Int,
+    ) : super(context, attrs, defStyleAttr, defStyleRes) {
         init(context, attrs)
     }
 
@@ -93,7 +94,6 @@ class StoriesProgressView : LinearLayout {
             p.layoutParams = progressBarLayoutParam
             return p
         }
-
     }
 
     private fun createSpace(): View {
@@ -269,7 +269,9 @@ class StoriesProgressView : LinearLayout {
 
         @Synchronized
         fun isRunningTest(): Boolean {
-            if (null == isRunningTest) {
+            isRunningTest?.let {
+                return isRunningTest!!.get()
+            } ?: kotlin.run {
                 val istest: Boolean = try {
                     // "android.support.test.espresso.Espresso" if you haven't migrated to androidx yet
                     Class.forName("androidx.test.espresso.Espresso")
@@ -278,9 +280,8 @@ class StoriesProgressView : LinearLayout {
                     false
                 }
                 isRunningTest = AtomicBoolean(istest)
+                return isRunningTest!!.get()
             }
-            return isRunningTest!!.get()
         }
     }
-
 }

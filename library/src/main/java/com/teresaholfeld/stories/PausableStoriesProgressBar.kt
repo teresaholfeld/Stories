@@ -16,9 +16,8 @@ class PausableStoriesProgressBar constructor(
     context: Context,
     attrs: AttributeSet? = null,
     progressColor: Int,
-    progressBackgroundColor: Int
-)
-    : FrameLayout(context, attrs), StoriesProgressBar {
+    progressBackgroundColor: Int,
+) : FrameLayout(context, attrs), StoriesProgressBar {
 
     private val frontProgressView: View?
     private val backProgressView: View?
@@ -35,9 +34,8 @@ class PausableStoriesProgressBar constructor(
     constructor(
         context: Context,
         progressColor: Int,
-        progressBackgroundColor: Int
-    )
-        : this(context, null, progressColor, progressBackgroundColor)
+        progressBackgroundColor: Int,
+    ) : this(context, null, progressColor, progressBackgroundColor)
 
     init {
         LayoutInflater.from(context).inflate(R.layout.pausable_progress, this)
@@ -55,7 +53,7 @@ class PausableStoriesProgressBar constructor(
         this.callback = callback
     }
 
-    override  fun setMax() {
+    override fun setMax() {
         finishProgress()
         frontProgressView?.clearAnimation()
         frontProgressView?.visibility = View.VISIBLE
@@ -65,7 +63,7 @@ class PausableStoriesProgressBar constructor(
         finishProgress()
     }
 
-    override  fun setMinWithoutCallback() {
+    override fun setMinWithoutCallback() {
         animation?.setAnimationListener(null)
         animation?.cancel()
         frontProgressView?.visibility = View.INVISIBLE
@@ -127,9 +125,8 @@ class PausableStoriesProgressBar constructor(
         pivotXType: Int,
         pivotXValue: Float,
         pivotYType: Int,
-        pivotYValue: Float
-    )
-        : ScaleAnimation(fromX, toX, fromY, toY, pivotXType, pivotXValue, pivotYType, pivotYValue) {
+        pivotYValue: Float,
+    ) : ScaleAnimation(fromX, toX, fromY, toY, pivotXType, pivotXValue, pivotYType, pivotYValue) {
 
         private var mElapsedAtPause: Long = 0
         private var mPaused = false
